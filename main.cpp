@@ -22,7 +22,6 @@ MFRC522 rfidReader( MBED_CONF_IOTKIT_RFID_MOSI, MBED_CONF_IOTKIT_RFID_MISO, MBED
 // I/O Buffer
 char message[6000];
 
-DigitalOut myled( MBED_CONF_IOTKIT_LED1 );
 
 int main()
 {      
@@ -52,7 +51,6 @@ int main()
 
     while   ( 1 ) 
     {
-        myled = 1;
         // RFID Reader
         if ( rfidReader.PICC_IsNewCardPresent())
             if ( rfidReader.PICC_ReadCardSerial()) 
@@ -67,24 +65,8 @@ int main()
                     HttpResponse* get_res = get_req->send();
                     //success response
                     if (get_res){
-                        MbedJSONValue parser;
-                        // HTTP GET (JSON) parsen
-                        parse( parser, get_res->get_body_as_string().c_str() );
-                        
-                        // std::string sunrise;
-                        // std::string sunset;            
-                        // sunrise = parser["results"]["sunrise"].get<std::string>();
-                        // sunset  = parser["results"]["sunset"] .get<std::string>(); 
-                        // // Umwandlung nach int. Damit die Zeiten besser verglichen werden können.
-                        // int rh, rm, rs, sh, sm, ss;
-                        // sscanf( sunrise.c_str(), "%d:%d:%d AM", &rh, &rm, &rs );
-                        // sscanf( sunset .c_str(), "%d:%d:%d PM", &sh, &sm, &ss );
-                        // oled.cursor( 1, 0 );
-                        // oled.printf( "auf   %02d.%02d.%02d\nunter %02d.%02d.%02d\n", rh+2, rm, rs, sh+2+12, sm, ss );
-                        // printf("parcesr: %s \n", parser);
-                        sdt::string answer;
-                        answer = parser["results"].get<std::string>();
-                        printf("%s \n", answer);
+                        printf( "request: %s\n", (char*) get_res->get_body() );
+                        printf("SUCCESS REQUEST");
                     }
                     // Error
                     else{
@@ -92,7 +74,6 @@ int main()
                         return 1;
                     }
                     delete get_req;
-                    myled = 0;
 
                 printf("\r\n");
                 // Print Card type

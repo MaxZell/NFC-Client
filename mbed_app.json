@@ -2,11 +2,11 @@
     "config": {
         "wifi-ssid": {
             "help": "WiFi SSID",
-            "value": "\"LERNKUBE\""
+            "value": "\"Philip Banyer's Wifi Network\""
         },
         "wifi-password": {
             "help": "WiFi Password",
-            "value": "\"l3rnk4b3\""
+            "value": "\"\""
         }
     },    
     "target_overrides": {
