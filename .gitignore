@@ -34,3 +34,5 @@ BUILD
 iotkit
 mbed-os
 mfrc522
+mbed-http
+iotkit/drivers/COMPONENT_wifi_ism43362
