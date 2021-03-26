@@ -22,7 +22,7 @@ MFRC522 rfidReader( MBED_CONF_IOTKIT_RFID_MOSI, MBED_CONF_IOTKIT_RFID_MISO, MBED
 
 // I/O Buffer
 char message[6000];
-char text[6000];
+char text[2000];
 std::string mystr; 
 int main()
 {      
@@ -66,18 +66,20 @@ int main()
                 oled.cursor( 1, 0 );                
                 // Print Card UID (2-stellig mit Vornullen, Hexadecimal)
                 printf("UID: ");
+                //clear old uid
+                sprintf(text, "%s:", "");
                 for ( int i = 0; i < rfidReader.uid.size; i++ )
-                    // printf("%02X:", rfidReader.uid.uidByte[i]);
                     //get uid
-                    // strcat(text, std::to_string(rfidReader.uid.uidByte[i]))
-                    // mystr =  reinterpret_cast< char const* >(rfidReader.uid.uidByte[i]);
+                    // printf("%02X:", rfidReader.uid.uidByte[i]);
+                    sprintf(text, "%s%02X:", text, rfidReader.uid.uidByte[i]);
+                    printf("\nUID: %s", text);
                     oled.clear();
-                    // sprintf( message, "%s%s%s%s", rfidReader.uid.uidByte[1], rfidReader.uid.uidByte[2], rfidReader.uid.uidByte[3], rfidReader.uid.uidByte[4]);
-                    // printf( "MESSAGE %s\n", message);
 
                     HttpRequest* post_req = new HttpRequest(network, HTTP_POST, "http://m242-backend.herokuapp.com/ajax/save-data");
                     // HttpResponse* get_res = get_req->send();
-                    char body[] = "{\"uid\":\"1234\"}";
+                    char body[] = "";
+                    // sprintf( body, "%s", "{\"uid\":\"12345\"}\n",);
+                    sprintf( body, "%s%s%s", "{\"uid\":\"", text, "\"}\n");
                     printf("BODY: %s\n", body);
                     post_req->set_header("Content-Type", "application/json");
                     HttpResponse* post_res = post_req->send(body, strlen(body));
@@ -99,12 +101,6 @@ int main()
                         return 1;
                     }
                     delete post_req;
-
-                // printf("\r\n");
-                // // Print Card type
-                // int piccType = rfidReader.PICC_GetType(rfidReader.uid.sak);
-                // printf("PICC Type: %s \r\n", rfidReader.PICC_GetTypeName(piccType) );
-                
             }
         thread_sleep_for( 200 );
     }
