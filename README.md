@@ -1,12 +1,13 @@
+#### Modul M242 LB2
 ## NFC / RFID 
 ***
 autor @JasonBanyer
 
-##Installation
+## Installation
 1. git clone: https://github.com/MaxZell/NFC-Client.git
 2. Import in Mbed Studio
 
-##Usage
+## Usage
 1. Set up the Arduino device, with all the components
 2. Fire up Mbed Studio
 3. Change the WiFi credentials in the mbed_app.json, so it works with your 
